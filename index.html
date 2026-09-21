@@ -1,71 +1,55 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flores per a tu ❤️</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-body {
-  background-color: #ffe6f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  padding: 20px;
-}
+  <!-- Contenedor principal de la carta -->
+  <div class="container">
+    <div class="card">
+      
+      <!-- Título principal -->
+      <h1 class="titulo">Les flors que et devia avui 🌻❤️</h1>
 
-.container {
-  width: 100%;
-  max-width: 450px;
-}
+      <!-- El teu missatge personalitzat per a la Queralt -->
+      <div class="mensajes">
+        <p>Bueno Queralt, avui no t'he pogut donar les flors en persona però t'he creat això perquè t'estimo moltíssim i avui te les merexies.</p>
+        <p>Queralt, ets l'amor de la meva vida i cada dia que passa t'estimo més i m'enamoro més de tu.</p>
+        <p class="firma">T'estimo amb tot el meu cor, amor. ❤️</p>
+      </div>
 
-.card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 30px 25px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  border: 2px solid #ffccd5;
-}
+      <!-- Contador de tiempo -->
+      <div class="contador-box">
+        <p>El meu amor per tu va començar fa...</p>
+        <div id="contador">Carregant temps...</div>
+      </div>
 
-.titulo {
-  color: #d4a300;
-  font-size: 1.4rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
+    </div>
+  </div>
 
-.mensajes p {
-  color: #4a4a4a;
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 12px;
-}
+  <script>
+    // Data d'inici ajustada a avui (21 de Setembre de 2026)
+    const fechaInicio = new Date(2026, 8, 21, 0, 0, 0); 
 
-.mensajes .firma {
-  color: #e63946;
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-top: 15px;
-}
+    function actualizarContador() {
+      const ahora = new Date();
+      const diferencia = ahora - fechaInicio;
 
-.contador-box {
-  margin-top: 25px;
-  padding-top: 15px;
-  border-top: 1px dashed #ffb3c1;
-}
+      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diferencia / 1000 / 60) % 60);
+      const segundos = Math.floor((diferencia / 1000) % 60);
 
-.contador-box p {
-  font-size: 0.85rem;
-  color: #777;
-  margin-bottom: 5px;
-}
+      document.getElementById('contador').innerText = 
+        `${dias} dies ${horas} hores ${minutos} minuts ${segundos} segons`;
+    }
 
-#contador {
-  font-size: 0.95rem;
-  font-weight: bold;
-  color: #d4a300;
-  background: #fff9e6;
-  padding: 10px;
-  border-radius: 10px;
-}
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
+  </script>
+</body>
+</html>
