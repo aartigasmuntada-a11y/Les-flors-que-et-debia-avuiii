@@ -3,33 +3,188 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flores per a tu ❤️</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Flors per tuu amorr ❤️</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #1a0013;
+      background-image: radial-gradient(#ff69b4 1px, transparent 1px);
+      background-size: 25px 25px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 15px;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    /* Pantalla inicial del sobre */
+    .contenedor-inicio {
+      text-align: center;
+      z-index: 10;
+    }
+
+    .carta-box {
+      background: #ffffff;
+      padding: 35px 45px;
+      border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2), 0 5px 15px rgba(0,0,0,0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 3px solid #ffd700;
+    }
+
+    .carta-box:hover {
+      transform: scale(1.05) translateY(-5px);
+      box-shadow: 0 20px 40px rgba(255, 215, 0, 0.4);
+    }
+
+    .icono-sobre {
+      font-size: 60px;
+      margin-bottom: 15px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .texto-clic {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #d4a300;
+    }
+
+    /* Escenari de l'arbre i missatge */
+    #escenario {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 480px;
+      position: relative;
+    }
+
+    canvas {
+      background: #fffdf9;
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      width: 100%;
+      height: auto;
+    }
+
+    .carta-mensaje {
+      background: #ffffff;
+      width: 100%;
+      padding: 28px 22px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      text-align: center;
+      animation: fadeInUp 1.2s ease-out forwards;
+      border-top: 2px solid #fff3c4;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .titulo-flores {
+      color: #d4a300;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+    }
+
+    .parrafo {
+      font-size: 0.98rem;
+      color: #4a4a4a;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .firma {
+      color: #e63946;
+      font-weight: bold;
+      margin-top: 18px;
+      font-size: 1.05rem;
+    }
+
+    .contador-box {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 2px dashed #ffe680;
+    }
+
+    .contador-box p {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 8px;
+    }
+
+    #contador {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #b8860b;
+      background: #fff9e6;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid #ffe066;
+      display: inline-block;
+    }
+
+    /* Pètals caient */
+    .petalo {
+      position: absolute;
+      background: #ffd700;
+      border-radius: 15px 0 15px 0;
+      opacity: 0.8;
+      pointer-events: none;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- Pantalla inicial amb el sobre -->
+  <!-- Pantalla inicial del sobre -->
   <div id="pantalla-inicio" class="contenedor-inicio">
     <div class="carta-box" onclick="iniciarAnimacion()">
       <div class="icono-sobre">📩</div>
-      <p class="texto-clic">Flores per a tu... (Fes clic aquí) ❤️</p>
+      <p class="texto-clic">Flors per tuu amorr (Fes clic aquí) ❤️</p>
     </div>
   </div>
 
-  <!-- Escenari de l'animació -->
+  <!-- Escenari de l'arbre i el missatge -->
   <div id="escenario" class="oculto">
-    <canvas id="canvasFlores"></canvas>
+    <canvas id="canvasFlores" width="480" height="480"></canvas>
     
     <!-- Quadre de text amb el missatge -->
     <div id="mensaje-final" class="carta-mensaje oculto">
-      <h2 class="titulo-flores">Flores Amarillas per a l'amor de la meva vida:</h2>
+      <h2 class="titulo-flores">Flors per tuu amorr 🌻❤️</h2>
       <p class="parrafo">Bueno Queralt, avui no t'he pogut donar les flors en persona però t'he creat això perquè t'estimo moltíssim i avui te les merexies.</p>
       <p class="parrafo">Queralt, ets l'amor de la meva vida i cada dia que passa t'estimo més i m'enamoro més de tu.</p>
       <p class="firma">T'estimo amb tot el meu cor, amor. ❤️</p>
       
       <div class="contador-box">
         <p>El meu amor per tu va començar fa...</p>
-        <div id="contador">Carregant temps...</div>
+        <div id="contador">Calculant temps...</div>
       </div>
     </div>
   </div>
@@ -38,45 +193,58 @@
     const canvas = document.getElementById('canvasFlores');
     const ctx = canvas.getContext('2d');
 
-    function ajustarCanvas() {
-      canvas.width = Math.min(window.innerWidth, 500);
-      canvas.height = 500;
-    }
-    ajustarCanvas();
-
     function iniciarAnimacion() {
       document.getElementById('pantalla-inicio').classList.add('oculto');
       document.getElementById('escenario').classList.remove('oculto');
-      dibujarArbol();
+      dibujarTronco();
     }
 
-    // Dibuix animat del tronc
-    function dibujarArbol() {
+    // Animació del tronc de l'arbre
+    function dibujarTronco() {
       let progreso = 0;
       const intervalo = setInterval(() => {
-        progreso += 0.02;
+        progreso += 0.025;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         ctx.beginPath();
-        ctx.moveTo(canvas.width / 2, canvas.height - 20);
-        ctx.lineTo(canvas.width / 2, canvas.height - 180 * progreso);
+        ctx.moveTo(canvas.width / 2, canvas.height - 10);
+        ctx.lineTo(canvas.width / 2, canvas.height - 200 * progreso);
         ctx.lineWidth = 14;
-        ctx.strokeStyle = '#5a3d28';
+        ctx.strokeStyle = '#4a2c11';
         ctx.lineCap = 'round';
         ctx.stroke();
 
+        // Branques principals
+        if (progreso > 0.5) {
+          let pBranques = (progreso - 0.5) * 2;
+          // Branca esquerra
+          ctx.beginPath();
+          ctx.moveTo(canvas.width / 2, canvas.height - 120);
+          ctx.quadraticCurveTo(canvas.width / 2 - 40, canvas.height - 150, canvas.width / 2 - 80 * pBranques, canvas.height - 180 * pBranques);
+          ctx.lineWidth = 8;
+          ctx.stroke();
+
+          // Branca dreta
+          ctx.beginPath();
+          ctx.moveTo(canvas.width / 2, canvas.height - 120);
+          ctx.quadraticCurveTo(canvas.width / 2 + 40, canvas.height - 150, canvas.width / 2 + 80 * pBranques, canvas.height - 180 * pBranques);
+          ctx.lineWidth = 8;
+          ctx.stroke();
+        }
+
         if (progreso >= 1) {
           clearInterval(intervalo);
-          dibujarRamasYFlores();
+          dibujarCorazonFlores();
         }
       }, 30);
     }
 
-    function dibujarRamasYFlores() {
+    // Floració en forma de cor
+    function dibujarCorazonFlores() {
       let floresCount = 0;
-      const maxFlores = 120;
+      const maxFlores = 160;
       const centroX = canvas.width / 2;
-      const centroY = 180;
+      const centroY = 170;
 
       const intervaloFlores = setInterval(() => {
         floresCount++;
@@ -85,32 +253,54 @@
         const x = 16 * Math.pow(Math.sin(t), 3);
         const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
         
-        const posX = centroX + x * 8 + (Math.random() * 20 - 10);
-        const posY = centroY + y * 8 + (Math.random() * 20 - 10);
+        const posX = centroX + x * 9.5 + (Math.random() * 24 - 12);
+        const posY = centroY + y * 9.5 + (Math.random() * 24 - 12);
 
-        ctx.beginPath();
-        ctx.arc(posX, posY, 6 + Math.random() * 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffd700';
-        ctx.fill();
+        // Petals grocs
+        for (let i = 0; i < 5; i++) {
+          const ang = (i * 72) * Math.PI / 180;
+          ctx.beginPath();
+          ctx.arc(posX + Math.cos(ang) * 4, posY + Math.sin(ang) * 4, 5, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffd700';
+          ctx.fill();
+        }
 
+        // Centre marró de la flor
         ctx.beginPath();
-        ctx.arc(posX, posY, 2, 0, Math.PI * 2);
-        ctx.fillStyle = '#8b4513';
+        ctx.arc(posX, posY, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#6b3e08';
         ctx.fill();
 
         if (floresCount >= maxFlores) {
           clearInterval(intervaloFlores);
+          crearPetalosCayendo();
           setTimeout(() => {
             document.getElementById('mensaje-final').classList.remove('oculto');
             iniciarContador();
-          }, 500);
+          }, 400);
         }
-      }, 40);
+      }, 25);
     }
 
+    // Pètals en moviment
+    function crearPetalosCayendo() {
+      const escenari = document.getElementById('escenario');
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const petalo = document.createElement('div');
+          petalo.className = 'petalo';
+          petalo.style.left = Math.random() * 90 + 5 + '%';
+          petalo.style.width = Math.random() * 8 + 6 + 'px';
+          petalo.style.height = petalo.style.width;
+          petalo.style.animationDuration = Math.random() * 3 + 3 + 's';
+          escenari.appendChild(petalo);
+        }, i * 300);
+      }
+    }
+
+    // Comptador exacte des del 5 d'Agost de 2026
     function iniciarContador() {
-      // Data configurada: 5 d'Agost de 2026 (El mes 7 és Agost en JavaScript)
-      const fechaInicio = new Date(2026, 7, 5, 0, 0, 0); 
+      const fechaInicio = new Date(2026, 7, 5, 0, 0, 0); // Mes 7 = Agost
       
       function actualizar() {
         const ahora = new Date();
