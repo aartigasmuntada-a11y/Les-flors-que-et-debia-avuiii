@@ -8,48 +8,125 @@
 </head>
 <body>
 
-  <!-- Contenedor principal de la carta -->
-  <div class="container">
-    <div class="card">
+  <!-- Pantalla inicial amb el sobre -->
+  <div id="pantalla-inicio" class="contenedor-inicio">
+    <div class="carta-box" onclick="iniciarAnimacion()">
+      <div class="icono-sobre">📩</div>
+      <p class="texto-clic">Flores per a tu... (Fes clic aquí) ❤️</p>
+    </div>
+  </div>
+
+  <!-- Escenari de l'animació -->
+  <div id="escenario" class="oculto">
+    <canvas id="canvasFlores"></canvas>
+    
+    <!-- Quadre de text amb el missatge -->
+    <div id="mensaje-final" class="carta-mensaje oculto">
+      <h2 class="titulo-flores">Flores Amarillas per a l'amor de la meva vida:</h2>
+      <p class="parrafo">Bueno Queralt, avui no t'he pogut donar les flors en persona però t'he creat això perquè t'estimo moltíssim i avui te les merexies.</p>
+      <p class="parrafo">Queralt, ets l'amor de la meva vida i cada dia que passa t'estimo més i m'enamoro més de tu.</p>
+      <p class="firma">T'estimo amb tot el meu cor, amor. ❤️</p>
       
-      <!-- Título principal -->
-      <h1 class="titulo">Les flors que et devia avui 🌻❤️</h1>
-
-      <!-- El teu missatge personalitzat per a la Queralt -->
-      <div class="mensajes">
-        <p>Bueno Queralt, avui no t'he pogut donar les flors en persona però t'he creat això perquè t'estimo moltíssim i avui te les merexies.</p>
-        <p>Queralt, ets l'amor de la meva vida i cada dia que passa t'estimo més i m'enamoro més de tu.</p>
-        <p class="firma">T'estimo amb tot el meu cor, amor. ❤️</p>
-      </div>
-
-      <!-- Contador de tiempo -->
       <div class="contador-box">
         <p>El meu amor per tu va començar fa...</p>
         <div id="contador">Carregant temps...</div>
       </div>
-
     </div>
   </div>
 
   <script>
-    // Data d'inici ajustada a avui (21 de Setembre de 2026)
-    const fechaInicio = new Date(2026, 8, 21, 0, 0, 0); 
+    const canvas = document.getElementById('canvasFlores');
+    const ctx = canvas.getContext('2d');
 
-    function actualizarContador() {
-      const ahora = new Date();
-      const diferencia = ahora - fechaInicio;
+    function ajustarCanvas() {
+      canvas.width = Math.min(window.innerWidth, 500);
+      canvas.height = 500;
+    }
+    ajustarCanvas();
 
-      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diferencia / 1000 / 60) % 60);
-      const segundos = Math.floor((diferencia / 1000) % 60);
-
-      document.getElementById('contador').innerText = 
-        `${dias} dies ${horas} hores ${minutos} minuts ${segundos} segons`;
+    function iniciarAnimacion() {
+      document.getElementById('pantalla-inicio').classList.add('oculto');
+      document.getElementById('escenario').classList.remove('oculto');
+      dibujarArbol();
     }
 
-    setInterval(actualizarContador, 1000);
-    actualizarContador();
+    // Dibuix animat del tronc
+    function dibujarArbol() {
+      let progreso = 0;
+      const intervalo = setInterval(() => {
+        progreso += 0.02;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, canvas.height - 20);
+        ctx.lineTo(canvas.width / 2, canvas.height - 180 * progreso);
+        ctx.lineWidth = 14;
+        ctx.strokeStyle = '#5a3d28';
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        if (progreso >= 1) {
+          clearInterval(intervalo);
+          dibujarRamasYFlores();
+        }
+      }, 30);
+    }
+
+    function dibujarRamasYFlores() {
+      let floresCount = 0;
+      const maxFlores = 120;
+      const centroX = canvas.width / 2;
+      const centroY = 180;
+
+      const intervaloFlores = setInterval(() => {
+        floresCount++;
+        
+        const t = (floresCount / maxFlores) * Math.PI * 2;
+        const x = 16 * Math.pow(Math.sin(t), 3);
+        const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+        
+        const posX = centroX + x * 8 + (Math.random() * 20 - 10);
+        const posY = centroY + y * 8 + (Math.random() * 20 - 10);
+
+        ctx.beginPath();
+        ctx.arc(posX, posY, 6 + Math.random() * 4, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffd700';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(posX, posY, 2, 0, Math.PI * 2);
+        ctx.fillStyle = '#8b4513';
+        ctx.fill();
+
+        if (floresCount >= maxFlores) {
+          clearInterval(intervaloFlores);
+          setTimeout(() => {
+            document.getElementById('mensaje-final').classList.remove('oculto');
+            iniciarContador();
+          }, 500);
+        }
+      }, 40);
+    }
+
+    function iniciarContador() {
+      // Data configurada: 5 d'Agost de 2026 (El mes 7 és Agost en JavaScript)
+      const fechaInicio = new Date(2026, 7, 5, 0, 0, 0); 
+      
+      function actualizar() {
+        const ahora = new Date();
+        const diff = ahora - fechaInicio;
+        
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / 1000 / 60) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        
+        document.getElementById('contador').innerText = 
+          `${d} dies ${h} hores ${m} minuts ${s} segons`;
+      }
+      setInterval(actualizar, 1000);
+      actualizar();
+    }
   </script>
 </body>
 </html>
